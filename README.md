@@ -16,6 +16,7 @@ and submit academic details through normal HTML forms. Two trained
 Scikit-learn models return predictions, which are stored in MySQL along
 with their inputs. An admin panel provides student management and
 chart-based analytics.
+site link - https://student-performance-predictor-2uo8.onrender.com
 
 ## 2. Problem Statement
 
