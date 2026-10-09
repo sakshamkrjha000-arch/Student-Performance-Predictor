@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Student Management{% endblock %}
+{% block content %}
+<h1>Student Management</h1>
+
+<form method="GET" action="{{ url_for('admin_students') }}" class="search-bar">
+  <input type="text" name="q" placeholder="Search by name, email, roll number or course"
+         value="{{ q }}" maxlength="100">
+  <button type="submit" class="btn btn-primary">Search</button>
+  {% if q %}<a class="btn btn-outline" href="{{ url_for('admin_students') }}">Clear</a>{% endif %}
+</form>
+
+{% if students %}
+<table class="data-table">
+  <thead>
+    <tr><th>ID</th><th>Name</th><th>Email</th><th>Roll No</th>
+        <th>Course</th><th>Sem</th><th>CGPA</th><th>Attend%</th>
+        <th>Actions</th></tr>
+  </thead>
+  <tbody>
+    {% for s in students %}
+    <tr>
+      <td>{{ s.student_id }}</td>
+      <td>{{ s.full_name }}</td>
+      <td>{{ s.email }}</td>
+      <td>{{ s.roll_number }}</td>
+      <td>{{ s.course }}</td>
+      <td>{{ s.semester }}</td>
+      <td>{{ '%.2f'|format(s.cgpa|float) }}</td>
+      <td>{{ '%.1f'|format(s.attendance|float) }}</td>
+      <td class="actions">
+        <a class="btn btn-small" href="{{ url_for('admin_student_detail', student_id=s.student_id) }}">View</a>
+        <form method="POST" class="inline-form"
+              action="{{ url_for('admin_student_delete', student_id=s.student_id) }}">
+          <button type="submit" class="btn btn-small btn-danger">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="muted">No students found{% if q %} for "{{ q }}"{% endif %}.</p>
+{% endif %}
+{% endblock %}

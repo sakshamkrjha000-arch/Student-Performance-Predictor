@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Analytics{% endblock %}
+{% block content %}
+<h1>Analytics</h1>
+<p class="muted">Charts are generated server-side with Pandas + Matplotlib
+   and served as plain PNG images — no JavaScript.</p>
+
+<h2>1. Performance Prediction Distribution</h2>
+<img class="chart" src="{{ url_for('static', filename='images/analytics_performance_dist.png') }}"
+     alt="Performance distribution chart" width="520">
+
+<h2>2. Placement Prediction Distribution</h2>
+<img class="chart" src="{{ url_for('static', filename='images/analytics_placement_dist.png') }}"
+     alt="Placement distribution chart" width="520">
+
+<h2>3. Attendance vs Internal Marks</h2>
+<img class="chart" src="{{ url_for('static', filename='images/analytics_attendance_perf.png') }}"
+     alt="Attendance vs performance chart" width="520">
+
+<h2>4. CGPA vs Technical Score (Placement Records)</h2>
+<img class="chart" src="{{ url_for('static', filename='images/analytics_cgpa_placement.png') }}"
+     alt="CGPA vs placement chart" width="520">
+
+<h2>5. Model Evaluation (training test results)</h2>
+<img class="chart" src="{{ url_for('static', filename='images/analytics_model_eval.png') }}"
+     alt="Model evaluation chart" width="560">
+
+<div class="cards">
+  {% if perf_metrics %}
+  <div class="card">
+    <h3>Performance Model — {{ perf_metrics.best_algorithm }}</h3>
+    <table class="data-table">
+      <thead><tr><th>Algorithm</th><th>Accuracy</th><th>Precision</th>
+        <th>Recall</th><th>F1</th></tr></thead>
+      <tbody>
+        {% for name, m in perf_metrics.metrics.items() %}
+        <tr><td>{{ name }}</td>
+            <td>{{ '%.3f'|format(m.accuracy) }}</td>
+            <td>{{ '%.3f'|format(m.precision) }}</td>
+            <td>{{ '%.3f'|format(m.recall) }}</td>
+            <td>{{ '%.3f'|format(m.f1) }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+  {% if place_metrics %}
+  <div class="card">
+    <h3>Placement Model — {{ place_metrics.best_algorithm }}</h3>
+    <table class="data-table">
+      <thead><tr><th>Algorithm</th><th>Accuracy</th><th>Precision</th>
+        <th>Recall</th><th>F1</th><th>ROC-AUC</th></tr></thead>
+      <tbody>
+        {% for name, m in place_metrics.metrics.items() %}
+        <tr><td>{{ name }}</td>
+            <td>{{ '%.3f'|format(m.accuracy) }}</td>
+            <td>{{ '%.3f'|format(m.precision) }}</td>
+            <td>{{ '%.3f'|format(m.recall) }}</td>
+            <td>{{ '%.3f'|format(m.f1) }}</td>
+            <td>{{ '%.3f'|format(m.roc_auc) }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

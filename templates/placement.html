@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Placement Prediction{% endblock %}
+{% block content %}
+<div class="form-card wide">
+  <h2>💼 Placement Prediction</h2>
+  <p class="muted">Enter your skill and academic details. All fields are
+     required.</p>
+  <form method="POST" action="{{ url_for('placement') }}">
+    <div class="grid-2">
+      <div>
+        <label for="cgpa">CGPA (0-10)</label>
+        <input type="number" step="0.01" id="cgpa" name="cgpa" required
+               min="0" max="10" value="{{ form.get('cgpa', '') }}">
+      </div>
+      <div>
+        <label for="attendance">Attendance % (0-100)</label>
+        <input type="number" step="0.1" id="attendance" name="attendance"
+               required min="0" max="100"
+               value="{{ form.get('attendance', '') }}">
+      </div>
+      <div>
+        <label for="technical_score">Technical Skills Score (0-100)</label>
+        <input type="number" step="0.1" id="technical_score"
+               name="technical_score" required min="0" max="100"
+               value="{{ form.get('technical_score', '') }}">
+      </div>
+      <div>
+        <label for="communication_score">Communication Score (0-100)</label>
+        <input type="number" step="0.1" id="communication_score"
+               name="communication_score" required min="0" max="100"
+               value="{{ form.get('communication_score', '') }}">
+      </div>
+      <div>
+        <label for="projects_completed">Projects Completed (0-30)</label>
+        <input type="number" id="projects_completed" name="projects_completed"
+               required min="0" max="30"
+               value="{{ form.get('projects_completed', '') }}">
+      </div>
+      <div>
+        <label for="internship_months">Internship Experience (months, 0-24)</label>
+        <input type="number" id="internship_months" name="internship_months"
+               required min="0" max="24"
+               value="{{ form.get('internship_months', '') }}">
+      </div>
+      <div>
+        <label for="certifications">Certifications (0-20)</label>
+        <input type="number" id="certifications" name="certifications"
+               required min="0" max="20"
+               value="{{ form.get('certifications', '') }}">
+      </div>
+      <div>
+        <label for="aptitude_score">Aptitude Score (0-100)</label>
+        <input type="number" step="0.1" id="aptitude_score"
+               name="aptitude_score" required min="0" max="100"
+               value="{{ form.get('aptitude_score', '') }}">
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary full">Predict</button>
+  </form>
+  <p class="disclaimer">This estimate does <strong>not guarantee
+     employment</strong>; real outcomes depend on company criteria and
+     interviews.</p>
+</div>
+{% endblock %}

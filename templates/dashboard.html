@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h1>Welcome, {{ student.full_name }} 👋</h1>
+<p class="muted">{{ student.course }} &middot; Semester {{ student.semester }}
+   &middot; {{ student.roll_number }}</p>
+
+<div class="cards">
+  <div class="card stat">
+    <span class="stat-value">{{ '%.2f'|format(student.cgpa|float) }}</span>
+    <span class="stat-label">CGPA</span>
+  </div>
+  <div class="card stat">
+    <span class="stat-value">{{ '%.1f'|format(student.attendance|float) }}%</span>
+    <span class="stat-label">Attendance</span>
+  </div>
+  <div class="card stat">
+    {% if latest_perf %}
+      <span class="stat-value badge-{{ 'good' if latest_perf.result_label == 'Good' else 'warn' if latest_perf.result_label == 'Average' else 'bad' }}">
+        {{ latest_perf.result_label }}</span>
+    {% else %}
+      <span class="stat-value">—</span>
+    {% endif %}
+    <span class="stat-label">Latest Performance</span>
+  </div>
+  <div class="card stat">
+    {% if latest_place %}
+      <span class="stat-value badge-{{ 'good' if latest_place.result_label == 'Placed' else 'bad' }}">
+        {{ latest_place.result_label }}</span>
+    {% else %}
+      <span class="stat-value">—</span>
+    {% endif %}
+    <span class="stat-label">Latest Placement</span>
+  </div>
+</div>
+
+<div class="cards">
+  <div class="card">
+    <h3>⚡ Quick Actions</h3>
+    <a class="btn btn-primary" href="{{ url_for('performance') }}">Predict Performance</a>
+    <a class="btn btn-secondary" href="{{ url_for('placement') }}">Predict Placement</a>
+    <a class="btn btn-outline" href="{{ url_for('profile') }}">Update Profile</a>
+  </div>
+  <div class="card">
+    <h3>ℹ️ How it works</h3>
+    <p>Fill the prediction forms with your academic numbers. A trained
+       machine-learning model returns an estimate which is saved to your
+       history below.</p>
+    <p class="disclaimer">Predictions are educational estimates,
+       not guarantees.</p>
+  </div>
+</div>
+
+<h2>Recent Prediction History</h2>
+{% if history %}
+<table class="data-table">
+  <thead>
+    <tr><th>Date</th><th>Type</th><th>Result</th><th>Confidence</th></tr>
+  </thead>
+  <tbody>
+    {% for h in history %}
+    <tr>
+      <td>{{ h.created_at }}</td>
+      <td>{{ h.prediction_type|capitalize }}</td>
+      <td>
+        <span class="badge {{ 'badge-good' if h.result_label in ('Good','Placed') else 'badge-bad' if h.result_label in ('Needs Improvement','Not Placed') else 'badge-warn' }}">
+          {{ h.result_label }}</span>
+      </td>
+      <td>{{ '%.1f'|format((h.probability or 0) * 100) }}%</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="muted">No predictions yet. Start with the
+   <a href="{{ url_for('performance') }}">performance form</a>.</p>
+{% endif %}
+{% endblock %}

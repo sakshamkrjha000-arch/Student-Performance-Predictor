@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Performance Prediction{% endblock %}
+{% block content %}
+<div class="form-card wide">
+  <h2>📊 Student Performance Prediction</h2>
+  <p class="muted">Enter your academic details. All fields are required.</p>
+  <form method="POST" action="{{ url_for('performance') }}">
+    <div class="grid-2">
+      <div>
+        <label for="attendance_pct">Attendance % (0-100)</label>
+        <input type="number" step="0.1" id="attendance_pct"
+               name="attendance_pct" required min="0" max="100"
+               value="{{ form.get('attendance_pct', '') }}">
+      </div>
+      <div>
+        <label for="assignment_marks">Assignment Marks (0-100)</label>
+        <input type="number" step="0.1" id="assignment_marks"
+               name="assignment_marks" required min="0" max="100"
+               value="{{ form.get('assignment_marks', '') }}">
+      </div>
+      <div>
+        <label for="internal_marks">Internal Exam Marks (0-100)</label>
+        <input type="number" step="0.1" id="internal_marks"
+               name="internal_marks" required min="0" max="100"
+               value="{{ form.get('internal_marks', '') }}">
+      </div>
+      <div>
+        <label for="prev_semester_marks">Previous Semester Marks (0-100)</label>
+        <input type="number" step="0.1" id="prev_semester_marks"
+               name="prev_semester_marks" required min="0" max="100"
+               value="{{ form.get('prev_semester_marks', '') }}">
+      </div>
+      <div>
+        <label for="study_hours">Study Hours per Day (0-16)</label>
+        <input type="number" step="0.5" id="study_hours" name="study_hours"
+               required min="0" max="16"
+               value="{{ form.get('study_hours', '') }}">
+      </div>
+      <div>
+        <label for="assignments_completed">Assignments Completed (0-50)</label>
+        <input type="number" id="assignments_completed"
+               name="assignments_completed" required min="0" max="50"
+               value="{{ form.get('assignments_completed', '') }}">
+      </div>
+      <div>
+        <label for="participation_score">Participation Score (0-10)</label>
+        <input type="number" step="0.1" id="participation_score"
+               name="participation_score" required min="0" max="10"
+               value="{{ form.get('participation_score', '') }}">
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary full">Predict</button>
+  </form>
+  <p class="disclaimer">The prediction is an educational estimate and is
+     <strong>not guaranteed</strong>.</p>
+</div>
+{% endblock %}

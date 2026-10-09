@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Admin Login{% endblock %}
+{% block content %}
+<div class="form-card">
+  <h2>🔐 Admin Login</h2>
+  <form method="POST" action="{{ url_for('admin_login') }}">
+    <label for="username">Username</label>
+    <input type="text" id="username" name="username" required maxlength="50">
+
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" required
+           maxlength="64">
+
+    <button type="submit" class="btn btn-primary full">Login as Admin</button>
+  </form>
+  <p class="muted"><a href="{{ url_for('login') }}">← Back to student login</a></p>
+</div>
+{% endblock %}

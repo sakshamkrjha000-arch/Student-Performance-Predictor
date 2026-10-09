@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<h1>Admin Dashboard</h1>
+<p class="muted">Logged in as {{ session.get('full_name') }} (admin)</p>
+
+<div class="cards">
+  <div class="card stat">
+    <span class="stat-value">{{ stats.students }}</span>
+    <span class="stat-label">Total Students</span>
+  </div>
+  <div class="card stat">
+    <span class="stat-value">{{ stats.users }}</span>
+    <span class="stat-label">User Accounts</span>
+  </div>
+  <div class="card stat">
+    <span class="stat-value">{{ stats.predictions }}</span>
+    <span class="stat-label">Total Predictions</span>
+  </div>
+  <div class="card stat">
+    <span class="stat-value">{{ stats.placed }}</span>
+    <span class="stat-label">"Placed" Results</span>
+  </div>
+</div>
+
+<div class="cards">
+  <div class="card">
+    <h3>🛠 Admin Actions</h3>
+    <a class="btn btn-primary" href="{{ url_for('admin_students') }}">Manage Students</a>
+    <a class="btn btn-secondary" href="{{ url_for('admin_analytics') }}">View Analytics</a>
+  </div>
+  <div class="card">
+    <h3>🤖 Selected ML Models</h3>
+    <p>Performance: <strong>Logistic Regression</strong> —
+       macro-F1 0.967</p>
+    <p>Placement: <strong>Logistic Regression</strong> —
+       F1 0.932, ROC-AUC 0.967</p>
+    <a class="btn btn-outline" href="{{ url_for('admin_analytics') }}">Evaluation graphs</a>
+  </div>
+</div>
+
+<h2>Recent Predictions (all students)</h2>
+{% if recent %}
+<table class="data-table">
+  <thead>
+    <tr><th>Date</th><th>Student</th><th>Roll No</th><th>Type</th>
+        <th>Result</th><th>Confidence</th></tr>
+  </thead>
+  <tbody>
+    {% for r in recent %}
+    <tr>
+      <td>{{ r.created_at }}</td>
+      <td>{{ r.full_name }}</td>
+      <td>{{ r.roll_number }}</td>
+      <td>{{ r.prediction_type|capitalize }}</td>
+      <td><span class="badge {{ 'badge-good' if r.result_label in ('Good','Placed') else 'badge-bad' if r.result_label in ('Needs Improvement','Not Placed') else 'badge-warn' }}">
+        {{ r.result_label }}</span></td>
+      <td>{{ '%.1f'|format((r.probability or 0) * 100) }}%</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="muted">No predictions recorded yet.</p>
+{% endif %}
+{% endblock %}

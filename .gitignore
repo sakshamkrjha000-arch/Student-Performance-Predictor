@@ -1,0 +1,9 @@
+# secrets - never commit
+.env
+
+# python
+__pycache__/
+*.pyc
+venv/
+
+# keep model + image dirs tracked via .gitkeep if empty

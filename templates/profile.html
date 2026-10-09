@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<div class="form-card wide">
+  <h2>My Profile</h2>
+  <p class="muted">Logged in as {{ student.email }}</p>
+  <form method="POST" action="{{ url_for('profile') }}">
+    <div class="grid-2">
+      <div>
+        <label>Full Name</label>
+        <input type="text" value="{{ student.full_name }}" disabled>
+      </div>
+      <div>
+        <label>Email</label>
+        <input type="text" value="{{ student.email }}" disabled>
+      </div>
+      <div>
+        <label>Roll Number</label>
+        <input type="text" value="{{ student.roll_number }}" disabled>
+      </div>
+      <div>
+        <label>Course</label>
+        <input type="text" name="course" required maxlength="80"
+               value="{{ student.course }}">
+      </div>
+      <div>
+        <label>Semester (1-8)</label>
+        <input type="number" name="semester" required min="1" max="8"
+               value="{{ student.semester }}">
+      </div>
+      <div>
+        <label>CGPA (0-10)</label>
+        <input type="number" step="0.01" name="cgpa" required min="0"
+               max="10" value="{{ student.cgpa }}">
+      </div>
+      <div>
+        <label>Attendance % (0-100)</label>
+        <input type="number" step="0.1" name="attendance" required min="0"
+               max="100" value="{{ student.attendance }}">
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary full">Save Changes</button>
+  </form>
+</div>
+{% endblock %}

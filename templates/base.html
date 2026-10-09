@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Student Prediction System{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <nav class="navbar">
+    <a class="brand" href="{{ url_for('index') }}">🎓 Student Prediction System</a>
+    <div class="nav-links">
+      {% if session.get('role') == 'student' %}
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('performance') }}">Performance</a>
+        <a href="{{ url_for('placement') }}">Placement</a>
+        <a href="{{ url_for('history') }}">History</a>
+        <a href="{{ url_for('profile') }}">Profile</a>
+        <a class="btn btn-danger" href="{{ url_for('logout') }}">Logout</a>
+      {% elif session.get('role') == 'admin' %}
+        <a href="{{ url_for('admin_dashboard') }}">Admin Home</a>
+        <a href="{{ url_for('admin_students') }}">Students</a>
+        <a href="{{ url_for('admin_analytics') }}">Analytics</a>
+        <a class="btn btn-danger" href="{{ url_for('logout') }}">Logout</a>
+      {% else %}
+        <a href="{{ url_for('login') }}">Login</a>
+        <a href="{{ url_for('register') }}">Register</a>
+        <a href="{{ url_for('admin_login') }}">Admin</a>
+      {% endif %}
+    </div>
+  </nav>
+
+  <main class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <p>AI-Based Student Performance &amp; Placement Prediction System —
+       educational estimates only, not a guarantee of results.</p>
+  </footer>
+</body>
+</html>

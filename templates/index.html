@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Home - Student Prediction System{% endblock %}
+{% block content %}
+<div class="hero">
+  <h1>AI-Based Student Performance &amp; Placement Prediction</h1>
+  <p class="lead">
+    Enter your academic details and receive machine-learning-based estimates of
+    your <strong>current performance level</strong> and
+    <strong>placement likelihood</strong>.
+  </p>
+  <div class="cards">
+    <div class="card">
+      <h3>📊 Performance Prediction</h3>
+      <p>Classified as <em>Good</em>, <em>Average</em>, or
+         <em>Needs Improvement</em> from attendance, marks and study habits.</p>
+    </div>
+    <div class="card">
+      <h3>💼 Placement Prediction</h3>
+      <p>An estimated placement likelihood from CGPA, skills, projects and
+         internships.</p>
+    </div>
+    <div class="card">
+      <h3>📈 Analytics</h3>
+      <p>Admins can explore distribution charts and model evaluation
+         graphs.</p>
+    </div>
+  </div>
+  <div class="center-actions">
+    <a class="btn btn-primary" href="{{ url_for('register') }}">Register</a>
+    <a class="btn btn-secondary" href="{{ url_for('login') }}">Login</a>
+    <a class="btn btn-outline" href="{{ url_for('admin_login') }}">Admin Login</a>
+  </div>
+  <p class="disclaimer">All predictions are educational estimates and are
+     <strong>not guaranteed</strong>.</p>
+</div>
+{% endblock %}

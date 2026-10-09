@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Prediction Result{% endblock %}
+{% block content %}
+<div class="result-card">
+  <h2>{{ '📊 Performance Result' if kind == 'performance' else '💼 Placement Result' }}</h2>
+
+  <div class="result-box {{ 'result-good' if label in ('Good','Placed') else 'result-bad' if label in ('Needs Improvement','Not Placed') else 'result-warn' }}">
+    <span class="result-label">{{ label }}</span>
+    <span class="result-conf">Confidence: {{ confidence }}%</span>
+  </div>
+
+  {% if kind == 'placement' %}
+    <p class="lead">Estimated placement likelihood:
+       <strong>{{ confidence }}%</strong></p>
+  {% endif %}
+
+  <h3>Inputs used for this prediction</h3>
+  <table class="data-table narrow">
+    <tbody>
+      {% for key, value in values.items() %}
+      <tr>
+        <th>{{ key.replace('_', ' ')|title }}</th>
+        <td>{{ value }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="alert alert-success">
+    Prediction saved to your
+    <a href="{{ url_for('history') }}">history</a>.
+  </div>
+
+  <p class="disclaimer">{{ disclaimer }}</p>
+
+  <div class="center-actions">
+    {% if kind == 'performance' %}
+      <a class="btn btn-secondary" href="{{ url_for('performance') }}">Predict again</a>
+    {% else %}
+      <a class="btn btn-secondary" href="{{ url_for('placement') }}">Predict again</a>
+    {% endif %}
+    <a class="btn btn-outline" href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+  </div>
+</div>
+{% endblock %}

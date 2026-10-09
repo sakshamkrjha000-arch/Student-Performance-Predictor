@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Prediction History{% endblock %}
+{% block content %}
+<h1>Prediction History</h1>
+<p class="muted">{{ student.full_name }} &middot; {{ student.roll_number }}</p>
+
+{% if rows %}
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Date</th><th>Type</th><th>Result</th><th>Confidence</th>
+      <th>Inputs Used</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in rows %}
+    <tr>
+      <td>{{ r.created_at }}</td>
+      <td>{{ r.prediction_type|capitalize }}</td>
+      <td>
+        <span class="badge {{ 'badge-good' if r.result_label in ('Good','Placed') else 'badge-bad' if r.result_label in ('Needs Improvement','Not Placed') else 'badge-warn' }}">
+          {{ r.result_label }}</span>
+      </td>
+      <td>{{ '%.1f'|format((r.probability or 0) * 100) }}%</td>
+      <td>
+        <details>
+          <summary>View inputs</summary>
+          <ul class="inputs-list">
+            {% for k, v in r.inputs.items() %}
+            <li><strong>{{ k.replace('_',' ')|title }}:</strong> {{ v }}</li>
+            {% endfor %}
+          </ul>
+        </details>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="muted">You have no predictions yet.
+   <a href="{{ url_for('performance') }}">Predict performance</a> or
+   <a href="{{ url_for('placement') }}">predict placement</a>.</p>
+{% endif %}
+{% endblock %}
