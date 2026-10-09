@@ -218,7 +218,9 @@ the session before the view runs.
 
 18. **How does HTML talk to Python?** Forms POST fields to routes;
     Flask reads `request.form`; Jinja2 templates render responses
-    with `{{ variables }}` and `{% for %}` loops.
+    with `{{ variables }}` and `{% for item in collection %}
+  {{ item }}
+{% endfor %}` loops.
 
 19. **Where are the charts and who makes them?** Matplotlib on the
     server saves PNGs into `static/images/`; HTML just shows them with
